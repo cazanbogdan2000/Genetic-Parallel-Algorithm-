@@ -1,0 +1,38 @@
+Cazan Bogdan-Marian 333CB
+
+                Distributed and parallel algorithms
+                         Homework 1
+
+        In order to realize this homework I started from the sequential
+implementation given. I created a structure where I saved all my data necesary;
+structure's name is "Thread_arguments", declared in genetic_algorithm.h. The
+structure has the following composition:
+    - firstly we add all the variables that were used in the sequential
+    implementation
+    - after that, we add a barrier, which will be used during all the execution
+    (the barrier is transmitted as a parameter because we need only one - and 
+    must have only one barrier)
+    - the number of threads that we're using
+
+        After that, we move all the code in our thread function and start
+parallelizing it:
+    - first, we parallelize the input, using start and end points, just like we
+    used in labs;
+    - the next will represent an iteration for each generation
+    - after that, we compute fitness and sort by it; calculate the start and end
+    points, in order to parallelize the compute fitness function (which is also
+    modified, adding a new parameter named start) and also the qsort
+    - next step is to merge all the sorted subvectors; this operation cannot be
+    parallelized, since we need to merge all the vectors after we sorted all the
+    corresponding subvectors
+    - then we keep first 30% (elite selection), also parallelized
+    - mutate first 20% children with the first version of bit string; the
+    mutation is being parallelized (using start and end)
+    - then we mutate the next 20% children with the second version of bit
+    string, operation also realized using start and end in order to obtain a
+    parallel implementation
+    - after we finish the iteration for each generation, we will do again the
+    compute function and sort part we used before and thats pretty much all.
+
+    Note: in this homework, I used only barriers, for security after every
+    parallelized step which could lead to nondeterministic behaviour.
